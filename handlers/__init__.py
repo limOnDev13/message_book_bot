@@ -1,6 +1,4 @@
 """
 Пакет, в котором хранятся обработчики апдейтов.
 """
-from . import admin_handlers,\
-              private_user_handlers,\
-              user_handlers
+from . import user_handlers, other_handlers

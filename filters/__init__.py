@@ -3,4 +3,4 @@
 самого aiogram, или если при регистрации хэндлеров в диспетчере
 анонимная функция получается слишком громоздкой)
 """
-from . import is_admin, language_filter
+from .special_filters import PageNumberPressedFilter, DeleteBookmarksFilter, GoToThisPage

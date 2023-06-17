@@ -1,4 +1,4 @@
 """
 Пакет с модулями для реализации какой-то бизнес-логики бота.
 """
-from . import services
+from .file_handling import book
