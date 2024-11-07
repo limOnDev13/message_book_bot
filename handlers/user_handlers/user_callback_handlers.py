@@ -1,5 +1,4 @@
-from aiogram import Router
-from aiogram.filters import Text
+from aiogram import Router, F
 from aiogram.types import CallbackQuery
 
 from database import users_db
@@ -12,7 +11,7 @@ from filters import PageNumberPressedFilter, DeleteBookmarksFilter, GoToThisPage
 router: Router = Router()
 
 
-@router.callback_query(Text(text=[LEXICON_RU['forward_cb']]))
+@router.callback_query(F.data == LEXICON_RU['forward_cb'])
 async def next_page_process(callback: CallbackQuery):
     if users_db[callback.from_user.id]['page'] < len(book):
         users_db[callback.from_user.id]['page'] += 1
@@ -23,7 +22,7 @@ async def next_page_process(callback: CallbackQuery):
     await callback.answer()
 
 
-@router.callback_query(Text(text=[LEXICON_RU['backward_cb']]))
+@router.callback_query(F.data == LEXICON_RU['backward_cb'])
 async def previous_page_process(callback: CallbackQuery):
     if users_db[callback.from_user.id]['page'] > 1:
         users_db[callback.from_user.id]['page'] -= 1
@@ -49,7 +48,7 @@ async def page_number_pressed_process(callback: CallbackQuery):
     await callback.answer()
 
 
-@router.callback_query(Text(text=LEXICON_RU['edit_marks_cb']))
+@router.callback_query(F.data == LEXICON_RU['edit_marks_cb'])
 async def edit_button_pressed_process(callback: CallbackQuery):
     await callback.message.edit_text(
         text=LEXICON_RU['edit_marks_text'],
@@ -58,7 +57,7 @@ async def edit_button_pressed_process(callback: CallbackQuery):
     await callback.answer()
 
 
-@router.callback_query(Text(text=[LEXICON_RU['cancel_edition_cb'], LEXICON_RU['close_marks_menu_cb']]))
+@router.callback_query(F.data == LEXICON_RU['cancel_edition_cb'] or F.data == LEXICON_RU['close_marks_menu_cb'])
 async def close_editor_process(callback: CallbackQuery):
     await callback.message.answer(
         text=LEXICON_RU['cancel_edition_text']
