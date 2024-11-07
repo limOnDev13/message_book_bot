@@ -1,7 +1,8 @@
 import os
 
 
-BOOK_PATH = 'books\\Bredberi_Marsianskie-hroniki.txt'
+# BOOK_PATH = 'books\\Bredberi_Marsianskie-hroniki.txt'
+BOOK_PATH = os.path.join(".", "books", "Bredberi_Marsianskie-hroniki.txt")
 PAGE_SIZE = 1050
 
 book: dict[int, str] = {}
@@ -9,7 +10,7 @@ book: dict[int, str] = {}
 
 def _get_part_text(text: str,
                    start: int,
-                   page_size: int) -> list[str, int]:
+                   page_size: int) -> tuple[str, int]:
     punctuation_marks = '.,?!:;'
 
     result_page_size: int
@@ -28,7 +29,7 @@ def _get_part_text(text: str,
     else:
         result_page_size = len(text[start:start + page_size])
 
-    return [result_text, result_page_size]
+    return result_text, result_page_size
 
 
 def prepare_book(path: str) -> None:
@@ -37,12 +38,11 @@ def prepare_book(path: str) -> None:
 
         page_number: int = 1
         while local_book:
-            [page, page_size] = _get_part_text(local_book, 0, PAGE_SIZE)
+            page, page_size = _get_part_text(local_book, 0, PAGE_SIZE)
             page = page.lstrip(' \n\t')
             book[page_number] = page
             page_number += 1
             local_book = local_book[page_size:]
 
 
-
-prepare_book(os.path.join(os.getcwd(), BOOK_PATH))
+prepare_book(BOOK_PATH)
